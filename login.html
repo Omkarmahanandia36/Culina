@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Culina | Login</title>
+</head>
+<body>
+
+  <h2>Login to Culina</h2>
+
+  <input type="text" id="name" placeholder="Enter your name" /><br><br>
+  <input type="email" id="email" placeholder="Enter your email" /><br><br>
+
+  <button onclick="handleLogin()">Login</button>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    CulinaStorage.init();
+
+    function handleLogin() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      try {
+        CulinaAuth.register(name, email);
+        window.location.href = "profile.html";
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+  </script>
+
+</body>
+</html>
