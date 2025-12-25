@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Culina | Profile</title>
+</head>
+<body>
+    <h2>
+        Complete your Profile
+    </h2>
+
+    <label>Diet Type</label><br>
+    <select id="diet">
+        <option value="">Select</option>
+        <option value="Vegetarian">Vegetarian</option>
+        <option value="Non-Vegetarian">Non-vegetarian</option>
+        <option value="vegan">Vegan</option>
+    </select><br><br>
+
+    <label>Cooking Skills</label><br>
+    <select id="skill">
+        <option value="">Select</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+    </select><br><br>
+
+    <label> Allergies (comma separated)</label><br>
+    <input type="text" id="allergies"><br><br>
+
+    <label> Liked Ingredients</label><br>
+    <input type="text" id="liked"><br><br>
+
+    <label>Avoided Ingredients</label><br>
+    <input type="text" id="avoided"><br><br>
+
+    <button type="button" onclick="save()">Save Profile</button>
+
+    
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+
+
+    <script>
+        CulinaStorage.init();
+        CulinaAuth.requireAuth();
+
+        const profile=CulinaProfile.getProfile();
+        if (profile){
+
+        document.getElementById("diet").value = profile.diet_type || "";
+        document.getElementById("skill").value = profile.cooking_skill || "";
+        document.getElementById("allergies").value = (profile.allergies || []).join(",");
+        document.getElementById("liked").value = (profile.liked_ingredients || []).join(",");
+        document.getElementById("avoided").value = (profile.avoided_ingredients || []).join(",");
+
+        }
+
+        function save(){
+            try{
+                CulinaProfile.saveProfile({
+                    diet_type: document.getElementById("diet").value,
+                    cooking_skill: document.getElementById("skill").value,
+                    allergies: document.getElementById("allergies").value.split(",").map(s => s.trim()).filter(Boolean),
+                    liked_ingredients: document.getElementById("liked").value.split(",").map(s => s.trim()).filter(Boolean),
+                    avoided_ingredients: document.getElementById("avoided").value.split(",").map(s => s.trim()).filter(Boolean)
+                });
+
+                window.location.href="index.html";
+
+            }
+            catch(err){
+                alert(err.message);
+            }
+        }
+    </script>
+</body>
+</html>
