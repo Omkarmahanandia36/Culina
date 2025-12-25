@@ -150,7 +150,7 @@ Stores user ratings and textual reviews for recipes.
 Although the schema is relational in design, it is implemented using client-side storage:
 
 - Tables are represented as JavaScript objects or arrays
-- Relationships are maintained using unique identifiers
+- Relationships are maintainedsing unique identifiers
 - Data persistence is handled via browser LocalStorage
 
 This approach ensures:
