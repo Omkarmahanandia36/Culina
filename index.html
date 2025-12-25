@@ -3,11 +3,20 @@
   <head>
     <title>culina.com</title>
   </head>
-  <body>5 
+  <body>
 
-    <script type="module" src="js/storage.js"></script>
-    <script>
+    <h1>Welcome to Culina</h1>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/profile.js"></script>
+
+  <script>
     CulinaStorage.init();
-    </script>
+    CulinaAuth.requireAuth();
+    CulinaProfile.requireProfile();
+  </script>
+
+
   </body>
 </html>
