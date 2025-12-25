@@ -1,11 +1,11 @@
-const CulinaStorage=(()=>{
+window.CulinaStorage=(()=>{
     const PREFIX ="culina_";
 
     const KEYS={
-        USER:prefix+"user",
-        PROFILE:prefix+"user_profile",
-        recipes : prefix+"recipes_cache",
-        reviews :prefix+"reviews"
+        USER:PREFIX+"user",
+        PROFILE:PREFIX+"user_profile",
+        recipes : PREFIX+"recipes_cache",
+        reviews :PREFIX+"reviews"
     };
 
 function read(key,fallback){
@@ -27,32 +27,34 @@ function write(key,value){
         console.error("storage write error:",key,err);
     }
 }
-/*innitialize*/ 
+/*initialize*/ 
 
 function init(){
-    if (!localStorage.getItem(KEYS.USER)){
-        write(KEYS.USER,null);
+    if (localStorage.getItem(KEYS.USER) === null){
+        write(KEYS.USER, null);
     }
-    if (!localStorage.getItem(KEYS.PROFILE)){
-        write(KEYS.PROFILE,null);
+    if (localStorage.getItem(KEYS.PROFILE) === null){
+        write(KEYS.PROFILE, null);
     }
-    if (!localStorage.getItem(KEYS.recipes)){
-        write(KEYS.recipes,{data : [],cached_at:null});
+    if (localStorage.getItem(KEYS.recipes) === null){
+        write(KEYS.recipes, { data: [], cached_at: null });
     }
-    if (!localStorage.getItem(KEYS.reviews)){
-        write(KEYS.reviews,[]);
+    if (localStorage.getItem(KEYS.reviews) === null){
+        write(KEYS.reviews, []);
     }
 }
+
+
 
 /*for_user*/ 
 
 function createUser(user){
     write(KEYS.USER,user);
 }
-function getUser(user){
+function getUser(){
     return read(KEYS.USER,null)
 }
-function clearUSer(){
+function clearUser(){
     write(KEYS.USER,null);
     write(KEYS.PROFILE,null);
 }
@@ -64,12 +66,12 @@ function saveProfile(profile){
 function getProfile(){
     return read(KEYS.PROFILE,null);
 }
-/*recipies cache--*/
-function saveRacipes(racipes){
+/*recipes cache--*/
+function saveRecipes(recipes){
     write(KEYS.recipes,{data:recipes,cached_at:Date.now()});
 }
 
-function getRecipies(){
+function getRecipes(){
     return read(KEYS.recipes,{data:[],cached_at:null});
 }
 
@@ -81,18 +83,18 @@ function clearRecipes(){
 function getAllReviews(){
     return read(KEYS.reviews,[]);
 }
-function saveReviews(reviews){
-    const reviews=getAllReviews()
-    const index=reviews.findIndex(
-        r >=r.user_id===reviews.user_id && r.recipe_id===review.recipe_id
+function saveReview(review){
+    const allReviews=getAllReviews()
+    const index=allReviews.findIndex(
+        r => r.user_id===review.user_id && r.recipe_id===review.recipe_id
     );
     if (index!==-1){
-        reviews[index]=reviews;
+        allReviews[index]=review;
     }
     else{
-        reviews.push(reviews)
+        allReviews.push(review)
     }
-    write(KEYS.reviews,reviews);
+    write(KEYS.reviews,allReviews);
 }
 function getReviewsByRecipe(recipeId) {
     return getAllReviews().filter(r => r.recipe_id === recipeId);
